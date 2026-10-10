@@ -248,11 +248,11 @@ export default function PenhoraDeImoveisPage() {
         <section className="contact-section" id="contato">
           <div className="container contact-grid">
             <div className="contact-copy"><p className="section-index gold">08 — CONTATO</p><h2>Seu caso exige uma análise jurídica individualizada?</h2><p>Entre em contato com o escritório para apresentar a situação inicial. O atendimento não pressupõe resultado e qualquer orientação depende da análise dos elementos do caso.</p><ContactCta openForm location="final_cta" variant="outline">Entrar em contato com o escritório</ContactCta><small>Não envie documentos sigilosos antes de receber orientação sobre o canal adequado.</small></div>
-            <div className="form-card"><div className="form-card-heading"><span>Solicitação de contato</span><p>Informe apenas os dados iniciais.</p></div><ContactForm whatsappNumber={siteConfig.whatsapp} location="contact_section" /></div>
+            <div className="form-card"><div className="form-card-heading"><span>Solicitação de contato</span><p>Informe apenas os dados iniciais.</p></div><ContactForm whatsappNumber={siteConfig.whatsapp} leadsWebhookUrl={siteConfig.leadsWebhookUrl} location="contact_section" /></div>
           </div>
         </section>
       </main>
-      <ContactModal whatsappNumber={siteConfig.whatsapp} />
+      <ContactModal whatsappNumber={siteConfig.whatsapp} leadsWebhookUrl={siteConfig.leadsWebhookUrl} />
       <Footer />
     </>
   );

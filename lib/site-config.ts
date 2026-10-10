@@ -14,6 +14,7 @@ export const siteConfig = {
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") || "5511947595005",
   whatsappMessage:
     "Olá, Dr. Samuel. Gostaria de informações sobre atendimento jurídico relacionado à penhora de um imóvel.",
+  leadsWebhookUrl: process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL?.trim() ?? "",
   allowIndexing: process.env.ALLOW_INDEXING === "true",
   gtmId: process.env.NEXT_PUBLIC_GTM_ID?.trim() ?? "",
 } as const;

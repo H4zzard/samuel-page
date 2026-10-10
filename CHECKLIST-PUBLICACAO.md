@@ -12,6 +12,8 @@
 
 - [ ] Confirmar que o número institucional `(11) 94759-5005` continua sendo o WhatsApp correto do escritório.
 - [ ] Testar o preenchimento e o redirecionamento do formulário para o WhatsApp em dispositivo real.
+- [ ] Publicar `apps-script/Code.gs` como Web App e configurar a URL `/exec` em `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`.
+- [ ] Fazer um envio real e confirmar as colunas na aba `imovel` antes de anunciar a página.
 - [ ] Configurar GTM apenas se houver contêiner real e revisar o consentimento.
 - [ ] Configurar no atendimento o evento `lead_qualification_confirmed` somente após confirmação real, sem dados jurídicos sensíveis.
 - [ ] Verificar que não existe outra tag GTM/GA4/Ads duplicada no domínio.

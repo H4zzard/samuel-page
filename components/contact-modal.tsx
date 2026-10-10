@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ContactForm } from "@/components/contact-form";
 
-export function ContactModal({ whatsappNumber }: { whatsappNumber: string }) {
+export function ContactModal({ whatsappNumber, leadsWebhookUrl }: { whatsappNumber: string; leadsWebhookUrl: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [formKey, setFormKey] = useState(0);
 
@@ -39,7 +39,7 @@ export function ContactModal({ whatsappNumber }: { whatsappNumber: string }) {
           <h2 id="contact-modal-title">Conte brevemente sua situação.</h2>
           <p>Preencha os dados iniciais. Ao enviar, você será direcionado ao WhatsApp do escritório.</p>
         </div>
-        <ContactForm key={formKey} whatsappNumber={whatsappNumber} location="contact_modal" />
+        <ContactForm key={formKey} whatsappNumber={whatsappNumber} leadsWebhookUrl={leadsWebhookUrl} location="contact_modal" />
       </div>
     </dialog>
   );

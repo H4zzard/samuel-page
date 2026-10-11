@@ -1,6 +1,6 @@
-# Landing page — Penhora de imóveis
+# Landing pages — Dr. Samuel Santos
 
-Landing page institucional do Dr. Samuel Santos para a rota `/penhora-de-imoveis`, construída com Next.js App Router, TypeScript estrito e Tailwind CSS.
+Aplicação institucional do Dr. Samuel Santos com landing pages independentes para `/penhora-de-imoveis` e `/bloqueio-judicial-de-conta`, construída com Next.js App Router, TypeScript estrito e Tailwind CSS.
 
 ## Executar localmente
 
@@ -10,7 +10,7 @@ copy .env.example .env.local
 npm run dev
 ```
 
-Acesse `http://localhost:3000/penhora-de-imoveis`.
+Acesse `http://localhost:3000/penhora-de-imoveis` ou `http://localhost:3000/bloqueio-judicial-de-conta`.
 
 ## Configuração
 
@@ -18,14 +18,15 @@ Preencha `.env.local` sem versionar dados reais:
 
 - `NEXT_PUBLIC_SITE_URL`: origem canônica, sem barra final.
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: número com DDI e DDD, apenas dígitos. O projeto usa como referência o número institucional verificado, mas a titularidade e atualidade devem ser confirmadas antes da publicação.
-- `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`: URL pública `/exec` da implantação do Apps Script que grava na aba `imovel`.
+- `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`: URL pública `/exec` da implantação ativa que grava na aba `IMOVEL`. O endpoint informado está configurado como padrão.
+- `NEXT_PUBLIC_ACCOUNT_GOOGLE_APPS_SCRIPT_URL`: use somente depois de republicar `apps-script/Code.gs` com suporte à aba `bloqueio_conta`. Enquanto estiver vazio, o formulário da nova página segue diretamente para o WhatsApp e não simula gravação em planilha.
 - `NEXT_PUBLIC_CONTACT_EMAIL` e `NEXT_PUBLIC_OFFICE_ADDRESS`: dados institucionais opcionais.
 - `ALLOW_INDEXING`: use `true` somente após revisão e publicação no domínio final.
 - `NEXT_PUBLIC_GTM_ID`: contêiner GTM opcional. Não informe um ID fictício nem mantenha outra instalação duplicada.
 
 ## Formulário
 
-O mesmo formulário aparece em um modal acionado pelos CTAs e permanece visível na seção final. A validação com Zod ocorre a cada alteração; o botão permanece desabilitado até que nome, WhatsApp, situação, valor do imóvel, cidade/UF e aceite de privacidade estejam válidos. No envio, o navegador tenta registrar o lead na aba `imovel` por `sendBeacon` e redireciona imediatamente ao WhatsApp do escritório com uma mensagem identificando a origem no site e os dados preenchidos.
+O formulário reutilizável aparece em modal e na seção final. A validação com Zod ocorre a cada alteração. A página de imóveis solicita nome, WhatsApp, situação, faixa de valor do imóvel, cidade/UF e aceite; a página de bloqueio de conta não solicita valor, CPF, conta, senha ou detalhes do processo. No envio, o visitante é direcionado ao WhatsApp com uma mensagem específica para o serviço.
 
 O código e as instruções para a planilha estão em `apps-script/Code.gs` e `apps-script/README.md`.
 
@@ -33,9 +34,9 @@ Todas as seções informativas terminam com um CTA que abre o modal. Os botões 
 
 ## Mensuração e consentimento
 
-O GTM é carregado somente após consentimento. A camada de dados usa:
+O GTM é carregado somente após consentimento. A camada de dados identifica automaticamente a rota e usa:
 
-- `page_service = penhora_imovel`
+- `page_service = penhora_imovel` ou `page_service = bloqueio_conta`
 - `page_view`
 - `cta_whatsapp_click`
 - `contact_form_submit` disparado imediatamente antes do redirecionamento ao WhatsApp, sem incluir dados pessoais no evento
@@ -53,12 +54,12 @@ npm run build
 
 ## Deploy
 
-O projeto pode ser publicado em ambiente compatível com Next.js (por exemplo, Vercel) ou em infraestrutura Node. Configure as variáveis no provedor, aponte `advsamuelsantos.com.br` para o projeto e confirme que a rota canônica responde em HTTPS.
+O projeto pode ser publicado em ambiente compatível com Next.js (por exemplo, Vercel) ou em infraestrutura Node. Configure as variáveis no provedor, aponte `advsamuelsantos.com.br` para o projeto e confirme que as duas rotas canônicas respondem em HTTPS. Defina `ALLOW_INDEXING=true` somente no ambiente final revisado.
 
 A fotografia em `public/images/samuel-santos-upscale.jpeg` utiliza a versão em alta resolução fornecida para o projeto. Confirme autorização, atualidade e preferência de enquadramento antes da publicação.
 
 ## Conteúdo e referências
 
-O conteúdo educativo foi redigido com base geral na Lei nº 8.009/1990 e no Código de Processo Civil. A comunicação foi mantida informativa e sóbria, seguindo a orientação do Provimento CFOAB nº 205/2021. O material não substitui análise jurídica e deve ser revisado pelo advogado responsável antes de ir ao ar.
+O conteúdo educativo foi redigido com base geral na Lei nº 8.009/1990, no Código de Processo Civil e nas informações institucionais do CNJ sobre o SISBAJUD. A comunicação foi mantida informativa e sóbria, seguindo a orientação do Provimento CFOAB nº 205/2021. O material não substitui análise jurídica e deve ser revisado pelo advogado responsável antes de ir ao ar.
 
 Consulte `CHECKLIST-PUBLICACAO.md` para as pendências externas.

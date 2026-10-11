@@ -22,6 +22,23 @@ type ContactFormProps = {
   pageService?: PageService;
 };
 
+async function deliverLead(url: string, payload: Record<string, unknown>) {
+  if (!url) return;
+
+  const request = fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    keepalive: true,
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify(payload),
+  }).catch(() => undefined);
+
+  await Promise.race([
+    request,
+    new Promise((resolve) => window.setTimeout(resolve, 1500)),
+  ]);
+}
+
 export function ContactForm({
   whatsappNumber,
   leadsWebhookUrl,
@@ -37,7 +54,7 @@ export function ContactForm({
     mode: "onChange",
   });
 
-  function onSubmit(values: ContactInput) {
+  async function onSubmit(values: ContactInput) {
     if (!whatsappNumber) return;
     const leadId = crypto.randomUUID();
     const leadPayload = {
@@ -56,22 +73,7 @@ export function ContactForm({
       attribution: readAttribution(),
     };
 
-    if (leadsWebhookUrl) {
-      const body = JSON.stringify(leadPayload);
-      const beaconSent = navigator.sendBeacon?.(
-        leadsWebhookUrl,
-        new Blob([body], { type: "text/plain;charset=UTF-8" }),
-      );
-      if (!beaconSent) {
-        void fetch(leadsWebhookUrl, {
-          method: "POST",
-          mode: "no-cors",
-          keepalive: true,
-          headers: { "Content-Type": "text/plain;charset=UTF-8" },
-          body,
-        }).catch(() => undefined);
-      }
-    }
+    await deliverLead(leadsWebhookUrl, leadPayload);
 
     const message = [
       "Olá, Dr. Samuel.",
@@ -123,7 +125,7 @@ export function ContactForm({
       </label>
       <button className="button button-gold form-submit" type="submit" disabled={!isValid || isSubmitting || !whatsappNumber}>
         <MessageCircle aria-hidden="true" size={18} />
-        Enviar pelo WhatsApp
+        {isSubmitting ? "Registrando contato…" : "Enviar pelo WhatsApp"}
       </button>
       {!isValid && <p className="form-config-note">Preencha todos os campos e aceite a Política de Privacidade para habilitar o envio.</p>}
       {!whatsappNumber && <p className="form-config-note">O número do WhatsApp precisa ser configurado antes do envio.</p>}

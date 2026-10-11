@@ -1,6 +1,6 @@
 const FORM_CONFIGS = {
   imovel_site_v1: {
-    sheetName: 'IMOVEL',
+    sheetName: 'imovel',
     situations: ['Imóvel penhorado', 'Risco de penhora', 'Leilão agendado', 'Outra situação'],
     requiresPropertyValue: true,
   },
@@ -16,8 +16,6 @@ const FORM_CONFIGS = {
     requiresPropertyValue: false,
   },
 };
-
-const SPREADSHEET_ID = '1KZhKyMe1jm5pV1rdkEunjVF-fqsyv_UAROjK6TJTQHE';
 
 const HEADERS = [
   'Recebido em',
@@ -61,7 +59,10 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     const formConfig = validateLead_(data);
 
-    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    if (!spreadsheet) {
+      throw new Error('Vincule este Apps Script à planilha que receberá os leads.');
+    }
 
     lock = LockService.getScriptLock();
     lock.waitLock(10000);

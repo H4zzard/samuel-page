@@ -3,17 +3,8 @@
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ContactForm } from "@/components/contact-form";
-import type { PageService } from "@/lib/site-config";
 
-export function ContactModal({
-  whatsappNumber,
-  leadsWebhookUrl,
-  pageService = "penhora_imovel",
-}: {
-  whatsappNumber: string;
-  leadsWebhookUrl: string;
-  pageService?: PageService;
-}) {
+export function ContactModal({ whatsappNumber, leadsWebhookUrl }: { whatsappNumber: string; leadsWebhookUrl: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [formKey, setFormKey] = useState(0);
 
@@ -48,7 +39,7 @@ export function ContactModal({
           <h2 id="contact-modal-title">Conte brevemente sua situação.</h2>
           <p>Preencha os dados iniciais. Ao enviar, você será direcionado ao WhatsApp do escritório.</p>
         </div>
-        <ContactForm key={formKey} whatsappNumber={whatsappNumber} leadsWebhookUrl={leadsWebhookUrl} location="contact_modal" pageService={pageService} />
+        <ContactForm key={formKey} whatsappNumber={whatsappNumber} leadsWebhookUrl={leadsWebhookUrl} location="contact_modal" />
       </div>
     </dialog>
   );

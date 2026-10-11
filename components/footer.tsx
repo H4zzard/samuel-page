@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 
-export function Footer({ pagePath = "/penhora-de-imoveis" }: { pagePath?: string }) {
+export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
@@ -14,17 +14,14 @@ export function Footer({ pagePath = "/penhora-de-imoveis" }: { pagePath?: string
         </div>
         <div>
           <h3>Institucional</h3>
-          <Link href={`${pagePath}#sobre`}>Sobre o advogado</Link>
-          <Link href={`${pagePath}#atuacao`}>Como funciona o atendimento</Link>
-          <Link href={`${pagePath}#duvidas`}>Dúvidas frequentes</Link>
-          <Link href="/penhora-de-imoveis">Penhora de imóveis</Link>
-          <Link href="/bloqueio-judicial-de-conta">Bloqueio de conta</Link>
+          <Link href="/penhora-de-imoveis#sobre">Sobre o advogado</Link>
+          <Link href="/penhora-de-imoveis#atuacao">Como funciona o atendimento</Link>
+          <Link href="/penhora-de-imoveis#duvidas">Dúvidas frequentes</Link>
         </div>
         <div>
           <h3>Informações</h3>
           <Link href="/politica-de-privacidade">Política de Privacidade</Link>
           <Link href="/politica-de-cookies">Política de Cookies</Link>
-          {siteConfig.whatsapp && <a href={`tel:+${siteConfig.whatsapp}`}>{siteConfig.whatsappDisplay}</a>}
           {siteConfig.email && <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>}
           {siteConfig.address && <p>{siteConfig.address}</p>}
         </div>
@@ -32,7 +29,7 @@ export function Footer({ pagePath = "/penhora-de-imoveis" }: { pagePath?: string
           <h3>Identificação</h3>
           <p>{siteConfig.legalName}</p>
           <p>CNPJ {siteConfig.cnpj}</p>
-          <a href={`${pagePath}#inicio`}>Voltar ao topo <ArrowUpRight aria-hidden="true" size={15} /></a>
+          <a href="#inicio">Voltar ao topo <ArrowUpRight aria-hidden="true" size={15} /></a>
         </div>
       </div>
       <div className="container footer-bottom">

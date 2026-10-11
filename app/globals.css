@@ -13,11 +13,10 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-body { margin: 0; overflow-x: hidden; background: var(--paper); color: var(--black); font-family: var(--font-sans), Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--black); font-family: var(--font-sans), Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
 ::selection { background: var(--gold); color: var(--black); }
-a:focus-visible, summary:focus-visible { outline: 3px solid rgba(212,167,44,.45); outline-offset: 4px; }
 .container { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
 .narrow { width: min(780px, calc(100% - 48px)); }
 
@@ -144,21 +143,6 @@ a:focus-visible, summary:focus-visible { outline: 3px solid rgba(212,167,44,.45)
 .assessment-item > div { display: flex; align-items: center; justify-content: space-between; color: var(--gold-hover); }
 .assessment-item > div span { color: #9d9d99; font-family: var(--font-serif), Georgia, serif; }
 .assessment-item h3 { margin-top: 70px; }
-
-.sisbajud-section { color: #fff; background: var(--black-2); }
-.sisbajud-section .centered > p:last-child { color: #aaa; }
-.sisbajud-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #383838; border: 1px solid #383838; }
-.sisbajud-flow article { position: relative; min-height: 310px; padding: 34px; background: #111; }
-.sisbajud-flow article:not(:last-child)::after { content: ""; position: absolute; z-index: 2; top: 50px; right: -9px; width: 17px; height: 17px; transform: rotate(45deg); background: #111; border-top: 1px solid #383838; border-right: 1px solid #383838; }
-.sisbajud-flow article > div { display: flex; align-items: center; justify-content: space-between; color: var(--gold); }
-.sisbajud-flow article > div span { color: #777; font-family: var(--font-serif), Georgia, serif; font-size: 14px; }
-.sisbajud-flow h3 { margin: 72px 0 14px; font-family: var(--font-serif), Georgia, serif; font-size: 25px; font-weight: 500; line-height: 1.25; }
-.sisbajud-flow p { margin: 0; color: #999; font-size: 13px; line-height: 1.75; }
-.official-source-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 38px; }
-.source-link-dark { color: #c9c9c9; border-color: #555; }
-.source-link-dark:hover { color: var(--gold); }
-.account-visual { background: radial-gradient(circle, rgba(212,167,44,.12), transparent 58%), linear-gradient(135deg, transparent 49.8%, #252525 50%, transparent 50.2%); }
-.bank-motif { border-color: rgba(212,167,44,.36); }
 
 .about-section { background: var(--paper); }
 .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 110px; align-items: center; }
@@ -290,10 +274,6 @@ a:focus-visible, summary:focus-visible { outline: 3px solid rgba(212,167,44,.45)
   .split-heading, .editorial-grid, .family-grid, .about-grid, .faq-grid, .contact-grid { grid-template-columns: 1fr; gap: 50px; }
   .sticky-title, .faq-intro { position: static; }
   .situations-grid { grid-template-columns: 1fr 1fr; }
-  .sisbajud-flow { grid-template-columns: 1fr; }
-  .sisbajud-flow article { min-height: 245px; }
-  .sisbajud-flow article:not(:last-child)::after { top: auto; right: 48px; bottom: -9px; transform: rotate(135deg); }
-  .official-source-row { align-items: flex-start; flex-direction: column; }
   .family-visual { max-width: 520px; width: 100%; margin: auto; }
   .about-photo { max-width: 560px; width: 100%; }
   .photo-label { right: 0; }
@@ -311,9 +291,6 @@ a:focus-visible, summary:focus-visible { outline: 3px solid rgba(212,167,44,.45)
   .trust-strip span { font-size: 10px; }
   .section-heading h2, .sticky-title h2, .family-copy h2, .about-copy h2, .faq-intro h2, .contact-copy h2 { font-size: 38px; }
   .situations-grid, .assessment-grid, .method-flow, .credentials, .field-row { grid-template-columns: 1fr; }
-  .sisbajud-flow article { min-height: 225px; padding: 27px; }
-  .sisbajud-flow h3 { margin-top: 48px; }
-  .official-source-row .button { width: 100%; }
   .section-cta-row { align-items: stretch; flex-direction: column; }
   .section-cta-row .button { width: 100%; }
   .situation-card { min-height: 255px; }

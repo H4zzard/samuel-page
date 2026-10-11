@@ -1,4 +1,4 @@
-const SHEET_NAME = 'imovel';
+const SHEET_NAME = 'IMOVEL';
 const FORM_KEY = 'imovel_site_v1';
 
 const HEADERS = [

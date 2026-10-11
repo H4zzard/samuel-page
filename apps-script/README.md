@@ -1,7 +1,7 @@
-# Integração com a aba `imovel`
+# Integração com a aba `IMOVEL`
 
 1. Abra a planilha que receberá os leads.
-2. Confirme que existe uma aba chamada `imovel`. O código também a cria se estiver ausente.
+2. Confirme que existe uma aba chamada `IMOVEL`. O código também a cria se estiver ausente.
 3. Na planilha, acesse **Extensões → Apps Script**.
 4. Substitua o conteúdo de `Code.gs` pelo arquivo deste diretório e salve.
 5. Clique em **Implantar → Nova implantação**.

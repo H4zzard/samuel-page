@@ -4,18 +4,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { contactSchema, propertyValueOptions, situationOptions, type ContactInput } from "@/lib/contact-schema";
+import {
+  accountContactSchema,
+  accountSituationOptions,
+  propertyContactSchema,
+  propertySituationOptions,
+  propertyValueOptions,
+  type ContactInput,
+} from "@/lib/contact-schema";
+import type { PageService } from "@/lib/site-config";
 import { readAttribution, trackEvent } from "@/lib/tracking";
 
 type ContactFormProps = {
   whatsappNumber: string;
   leadsWebhookUrl: string;
   location: "contact_section" | "contact_modal";
+  pageService?: PageService;
 };
 
-export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: ContactFormProps) {
+export function ContactForm({
+  whatsappNumber,
+  leadsWebhookUrl,
+  location,
+  pageService = "penhora_imovel",
+}: ContactFormProps) {
+  const isAccountPage = pageService === "bloqueio_conta";
+  const schema = isAccountPage ? accountContactSchema : propertyContactSchema;
+  const situationOptions = isAccountPage ? accountSituationOptions : propertySituationOptions;
   const { register, handleSubmit, formState: { errors, isSubmitting, isValid } } = useForm<ContactInput>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(schema),
     defaultValues: { privacyAccepted: false },
     mode: "onChange",
   });
@@ -24,16 +41,16 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
     if (!whatsappNumber) return;
     const leadId = crypto.randomUUID();
     const leadPayload = {
-      formKey: "imovel_site_v1",
+      formKey: isAccountPage ? "bloqueio_conta_site_v1" : "imovel_site_v1",
       leadId,
       submittedAt: new Date().toISOString(),
-      pageService: "penhora_imovel",
+      pageService,
       pageUrl: window.location.href,
       formLocation: location,
       name: values.name,
       whatsapp: values.whatsapp,
       situation: values.situation,
-      propertyValue: values.propertyValue,
+      propertyValue: "propertyValue" in values ? values.propertyValue : undefined,
       city: values.city,
       privacyAccepted: values.privacyAccepted,
       attribution: readAttribution(),
@@ -58,12 +75,14 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
 
     const message = [
       "Olá, Dr. Samuel.",
-      "Vim pelo site advsamuelsantos.com.br e preciso de ajuda com penhora de imóveis.",
+      isAccountPage
+        ? "Gostaria de informações sobre atendimento jurídico relacionado a um bloqueio judicial em conta bancária."
+        : "Vim pelo site advsamuelsantos.com.br e preciso de ajuda com penhora de imóveis.",
       "",
       `Nome: ${values.name}`,
       `WhatsApp: ${values.whatsapp}`,
       `Situação: ${values.situation}`,
-      `Valor do imóvel: ${values.propertyValue}`,
+      ...(isAccountPage || !("propertyValue" in values) ? [] : [`Valor do imóvel: ${values.propertyValue}`]),
       `Cidade/UF: ${values.city}`,
     ].join("\n");
 
@@ -84,14 +103,17 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
             {situationOptions.map((option) => <option key={option}>{option}</option>)}
           </select>
         </label>
-        <label>Valor aproximado do imóvel
-          <select defaultValue="" required {...register("propertyValue")} aria-invalid={!!errors.propertyValue}>
-            <option value="" disabled>Selecione</option>
-            {propertyValueOptions.map((option) => <option key={option}>{option}</option>)}
-          </select>
-        </label>
+        {!isAccountPage && (
+          <label>Valor aproximado do imóvel
+            <select defaultValue="" required {...register("propertyValue")} aria-invalid={!!errors.propertyValue}>
+              <option value="" disabled>Selecione</option>
+              {propertyValueOptions.map((option) => <option key={option}>{option}</option>)}
+            </select>
+          </label>
+        )}
+        {isAccountPage && <label>Cidade/UF<input autoComplete="address-level2" required placeholder="Ex.: Campinas/SP" {...register("city")} aria-invalid={!!errors.city} /></label>}
       </div>
-      <label className="field-full">Cidade/UF<input autoComplete="address-level2" required placeholder="Ex.: Campinas/SP" {...register("city")} aria-invalid={!!errors.city} /></label>
+      {!isAccountPage && <label className="field-full">Cidade/UF<input autoComplete="address-level2" required placeholder="Ex.: Campinas/SP" {...register("city")} aria-invalid={!!errors.city} /></label>}
       <div className="form-errors" aria-live="polite">
         {Object.values(errors)[0]?.message && <p>{String(Object.values(errors)[0]?.message)}</p>}
       </div>

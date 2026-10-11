@@ -1,5 +1,21 @@
-const SHEET_NAME = 'imovel';
-const FORM_KEY = 'imovel_site_v1';
+const FORM_CONFIGS = {
+  imovel_site_v1: {
+    sheetName: 'imovel',
+    situations: ['Imóvel penhorado', 'Risco de penhora', 'Leilão agendado', 'Outra situação'],
+    requiresPropertyValue: true,
+  },
+  bloqueio_conta_site_v1: {
+    sheetName: 'bloqueio_conta',
+    situations: [
+      'Conta bloqueada judicialmente',
+      'Bloqueio de salário ou benefício',
+      'Bloqueio de conta empresarial',
+      'Possível excesso de bloqueio',
+      'Outra situação',
+    ],
+    requiresPropertyValue: false,
+  },
+};
 
 const HEADERS = [
   'Recebido em',
@@ -27,8 +43,8 @@ const HEADERS = [
 function doGet() {
   return jsonResponse_({
     ok: true,
-    service: 'leads_penhora_imoveis',
-    sheet: SHEET_NAME,
+    service: 'leads_site_samuel_santos',
+    sheets: Object.keys(FORM_CONFIGS).map(function (key) { return FORM_CONFIGS[key].sheetName; }),
   });
 }
 
@@ -41,7 +57,7 @@ function doPost(e) {
     }
 
     const data = JSON.parse(e.postData.contents);
-    validateLead_(data);
+    const formConfig = validateLead_(data);
 
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     if (!spreadsheet) {
@@ -51,9 +67,9 @@ function doPost(e) {
     lock = LockService.getScriptLock();
     lock.waitLock(10000);
 
-    let sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    let sheet = spreadsheet.getSheetByName(formConfig.sheetName);
     if (!sheet) {
-      sheet = spreadsheet.insertSheet(SHEET_NAME);
+      sheet = spreadsheet.insertSheet(formConfig.sheetName);
     }
 
     if (sheet.getLastRow() === 0) {
@@ -102,11 +118,13 @@ function doPost(e) {
 }
 
 function validateLead_(data) {
-  if (data.formKey !== FORM_KEY) {
+  const config = FORM_CONFIGS[data.formKey];
+  if (!config) {
     throw new Error('Identificação do formulário inválida.');
   }
 
-  const required = ['leadId', 'name', 'whatsapp', 'situation', 'propertyValue', 'city'];
+  const required = ['leadId', 'name', 'whatsapp', 'situation', 'city'];
+  if (config.requiresPropertyValue) required.push('propertyValue');
   required.forEach(function (field) {
     if (!String(data[field] || '').trim()) {
       throw new Error('Campo obrigatório ausente: ' + field);
@@ -118,18 +136,19 @@ function validateLead_(data) {
     throw new Error('WhatsApp inválido.');
   }
 
-  const situations = ['Imóvel penhorado', 'Risco de penhora', 'Leilão agendado', 'Outra situação'];
   const propertyValues = ['Até R$ 500 mil', 'De R$ 500 mil a R$ 1 milhão', 'Acima de R$ 1 milhão'];
 
-  if (situations.indexOf(data.situation) === -1) {
+  if (config.situations.indexOf(data.situation) === -1) {
     throw new Error('Situação inválida.');
   }
-  if (propertyValues.indexOf(data.propertyValue) === -1) {
+  if (config.requiresPropertyValue && propertyValues.indexOf(data.propertyValue) === -1) {
     throw new Error('Faixa de valor inválida.');
   }
   if (data.privacyAccepted !== true) {
     throw new Error('Consentimento de privacidade ausente.');
   }
+
+  return config;
 }
 
 function safeCell_(value) {

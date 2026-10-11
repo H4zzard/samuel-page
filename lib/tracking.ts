@@ -28,7 +28,10 @@ export function hasAnalyticsConsent() {
 export function trackEvent(event: TrackedEvent, details: Record<string, unknown> = {}) {
   if (!hasAnalyticsConsent()) return;
   window.dataLayer = window.dataLayer ?? [];
-  window.dataLayer.push({ event, page_service: "penhora_imovel", ...details });
+  const pageService = window.location.pathname.startsWith("/bloqueio-judicial-de-conta")
+    ? "bloqueio_conta"
+    : "penhora_imovel";
+  window.dataLayer.push({ event, ...details, page_service: pageService });
 }
 
 export function readAttribution() {

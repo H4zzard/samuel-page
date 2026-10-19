@@ -1,4 +1,8 @@
 const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://advsamuelsantos.com.br").replace(/\/$/, "");
+const configuredGtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
+const gtmId = configuredGtmId && /^GTM-[A-Z0-9]+$/.test(configuredGtmId)
+  ? configuredGtmId
+  : "GTM-5KHN42MZ";
 
 export const siteConfig = {
   name: "Dr. Samuel Santos",
@@ -16,7 +20,7 @@ export const siteConfig = {
     "Olá, Dr. Samuel. Gostaria de informações sobre atendimento jurídico relacionado à penhora de um imóvel.",
   leadsWebhookUrl: process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL?.trim() ?? "",
   allowIndexing: process.env.ALLOW_INDEXING === "true",
-  gtmId: process.env.NEXT_PUBLIC_GTM_ID?.trim() ?? "",
+  gtmId,
 } as const;
 
 export function whatsappUrl() {

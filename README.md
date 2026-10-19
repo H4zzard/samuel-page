@@ -21,7 +21,7 @@ Preencha `.env.local` sem versionar dados reais:
 - `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`: URL pública `/exec` da implantação do Apps Script que grava na aba `imovel`.
 - `NEXT_PUBLIC_CONTACT_EMAIL` e `NEXT_PUBLIC_OFFICE_ADDRESS`: dados institucionais opcionais.
 - `ALLOW_INDEXING`: use `true` somente após revisão e publicação no domínio final.
-- `NEXT_PUBLIC_GTM_ID`: contêiner GTM opcional. Não informe um ID fictício nem mantenha outra instalação duplicada.
+- `NEXT_PUBLIC_GTM_ID`: permite substituir o contêiner GTM padrão (`GTM-5KHN42MZ`). Não mantenha outra instalação duplicada.
 
 ## Formulário
 

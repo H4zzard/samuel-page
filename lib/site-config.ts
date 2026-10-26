@@ -1,4 +1,11 @@
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://advsamuelsantos.com.br").replace(/\/$/, "");
+const productionUrl = "https://imovel.advsamuelsantos.com.br";
+const isVercelProduction = process.env.NODE_ENV === "production" && process.env.VERCEL_ENV === "production";
+const configuredBaseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? productionUrl).replace(/\/$/, "");
+const baseUrl = isVercelProduction ? productionUrl : configuredBaseUrl;
+const isProductionSite = isVercelProduction ||
+  (process.env.NODE_ENV === "production" &&
+    process.env.VERCEL_ENV === undefined &&
+    baseUrl === productionUrl);
 const configuredGtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
 const gtmId = configuredGtmId && /^GTM-[A-Z0-9]+$/.test(configuredGtmId)
   ? configuredGtmId
@@ -19,7 +26,7 @@ export const siteConfig = {
   whatsappMessage:
     "Olá, Dr. Samuel. Gostaria de informações sobre atendimento jurídico relacionado à penhora de um imóvel.",
   leadsWebhookUrl: process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL?.trim() ?? "",
-  allowIndexing: process.env.ALLOW_INDEXING === "true",
+  allowIndexing: isProductionSite,
   gtmId,
 } as const;
 

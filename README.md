@@ -16,11 +16,10 @@ Acesse `http://localhost:3000/penhora-de-imoveis`.
 
 Preencha `.env.local` sem versionar dados reais:
 
-- `NEXT_PUBLIC_SITE_URL`: origem canônica, sem barra final.
+- `NEXT_PUBLIC_SITE_URL`: origem canônica, sem barra final. Em produção, use `https://imovel.advsamuelsantos.com.br`.
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: número com DDI e DDD, apenas dígitos. O projeto usa como referência o número institucional verificado, mas a titularidade e atualidade devem ser confirmadas antes da publicação.
 - `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`: URL pública `/exec` da implantação do Apps Script que grava na aba `imovel`.
 - `NEXT_PUBLIC_CONTACT_EMAIL` e `NEXT_PUBLIC_OFFICE_ADDRESS`: dados institucionais opcionais.
-- `ALLOW_INDEXING`: use `true` somente após revisão e publicação no domínio final.
 - `NEXT_PUBLIC_GTM_ID`: permite substituir o contêiner GTM padrão (`GTM-5KHN42MZ`). Não mantenha outra instalação duplicada.
 
 ## Formulário
@@ -53,7 +52,7 @@ npm run build
 
 ## Deploy
 
-O projeto pode ser publicado em ambiente compatível com Next.js (por exemplo, Vercel) ou em infraestrutura Node. Configure as variáveis no provedor, aponte `advsamuelsantos.com.br` para o projeto e confirme que a rota canônica responde em HTTPS.
+O projeto pode ser publicado em ambiente compatível com Next.js (por exemplo, Vercel) ou em infraestrutura Node. Configure `NEXT_PUBLIC_SITE_URL` como `https://imovel.advsamuelsantos.com.br`, aponte esse domínio para o projeto e confirme que a rota canônica responde em HTTPS. A indexação é habilitada somente em builds de produção desse domínio; previews Vercel, desenvolvimento e builds com outra origem permanecem bloqueados.
 
 A fotografia em `public/images/samuel-santos-upscale.jpeg` utiliza a versão em alta resolução fornecida para o projeto. Confirme autorização, atualidade e preferência de enquadramento antes da publicação.
 

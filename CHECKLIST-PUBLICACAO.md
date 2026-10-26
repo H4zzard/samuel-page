@@ -20,7 +20,7 @@
 
 ## SEO e domínio
 
-- [ ] Definir `ALLOW_INDEXING=true` somente na produção revisada.
+- [ ] Confirmar que a produção usa `https://imovel.advsamuelsantos.com.br` e que previews/staging permanecem bloqueados para indexação.
 - [ ] Confirmar canonical, sitemap, robots e OG image no domínio final.
 - [ ] Vincular Search Console e validar a propriedade do domínio.
 - [ ] Conferir redirecionamentos HTTPS e variações com/sem `www`.

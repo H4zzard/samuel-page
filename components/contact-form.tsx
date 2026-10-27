@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { contactSchema, propertyValueOptions, situationOptions, type ContactInput } from "@/lib/contact-schema";
+import { contactSchema, situationOptions, type ContactInput } from "@/lib/contact-schema";
 import { readAttribution, trackEvent } from "@/lib/tracking";
 
 type ContactFormProps = {
@@ -33,8 +33,6 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
       name: values.name,
       whatsapp: values.whatsapp,
       situation: values.situation,
-      propertyValue: values.propertyValue,
-      city: values.city,
       privacyAccepted: values.privacyAccepted,
       attribution: readAttribution(),
     };
@@ -63,8 +61,6 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
       `Nome: ${values.name}`,
       `WhatsApp: ${values.whatsapp}`,
       `Situação: ${values.situation}`,
-      `Valor do imóvel: ${values.propertyValue}`,
-      `Cidade/UF: ${values.city}`,
     ].join("\n");
 
     trackEvent("contact_form_submit", { form_location: location, destination: "whatsapp" });
@@ -77,21 +73,12 @@ export function ContactForm({ whatsappNumber, leadsWebhookUrl, location }: Conta
         <label>Nome<input autoComplete="name" required {...register("name")} aria-invalid={!!errors.name} /></label>
         <label>WhatsApp<input autoComplete="tel" inputMode="tel" required placeholder="(11) 99999-9999" {...register("whatsapp")} aria-invalid={!!errors.whatsapp} /></label>
       </div>
-      <div className="field-row">
-        <label>Tipo de situação
-          <select defaultValue="" required {...register("situation")} aria-invalid={!!errors.situation}>
-            <option value="" disabled>Selecione</option>
-            {situationOptions.map((option) => <option key={option}>{option}</option>)}
-          </select>
-        </label>
-        <label>Valor aproximado do imóvel
-          <select defaultValue="" required {...register("propertyValue")} aria-invalid={!!errors.propertyValue}>
-            <option value="" disabled>Selecione</option>
-            {propertyValueOptions.map((option) => <option key={option}>{option}</option>)}
-          </select>
-        </label>
-      </div>
-      <label className="field-full">Cidade/UF<input autoComplete="address-level2" required placeholder="Ex.: Campinas/SP" {...register("city")} aria-invalid={!!errors.city} /></label>
+      <label className="field-full">Situação da penhora
+        <select defaultValue="" required {...register("situation")} aria-invalid={!!errors.situation}>
+          <option value="" disabled>Selecione</option>
+          {situationOptions.map((option) => <option key={option}>{option}</option>)}
+        </select>
+      </label>
       <div className="form-errors" aria-live="polite">
         {Object.values(errors)[0]?.message && <p>{String(Object.values(errors)[0]?.message)}</p>}
       </div>

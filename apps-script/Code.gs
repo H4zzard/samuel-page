@@ -7,8 +7,6 @@ const HEADERS = [
   'Nome',
   'WhatsApp',
   'Situação',
-  'Valor do imóvel',
-  'Cidade/UF',
   'Consentimento',
   'Origem',
   'Página',
@@ -66,28 +64,30 @@ function doPost(e) {
     }
 
     const attribution = data.attribution || {};
-    sheet.appendRow([
-      new Date(),
-      safeCell_(data.leadId),
-      safeCell_(data.name),
-      safeCell_(data.whatsapp),
-      safeCell_(data.situation),
-      safeCell_(data.propertyValue),
-      safeCell_(data.city),
-      data.privacyAccepted === true ? 'Sim' : 'Não',
-      safeCell_(data.pageService),
-      safeCell_(data.pageUrl),
-      safeCell_(data.formLocation),
-      safeCell_(data.submittedAt),
-      safeCell_(attribution.utm_source),
-      safeCell_(attribution.utm_medium),
-      safeCell_(attribution.utm_campaign),
-      safeCell_(attribution.utm_content),
-      safeCell_(attribution.utm_term),
-      safeCell_(attribution.gclid),
-      safeCell_(attribution.gbraid),
-      safeCell_(attribution.wbraid),
-    ]);
+    const rowByHeader = {
+      'Recebido em': new Date(),
+      'ID do lead': safeCell_(data.leadId),
+      'Nome': safeCell_(data.name),
+      'WhatsApp': safeCell_(data.whatsapp),
+      'Situação': safeCell_(data.situation),
+      'Consentimento': data.privacyAccepted === true ? 'Sim' : 'Não',
+      'Origem': safeCell_(data.pageService),
+      'Página': safeCell_(data.pageUrl),
+      'Local do formulário': safeCell_(data.formLocation),
+      'Enviado pelo navegador em': safeCell_(data.submittedAt),
+      'UTM Source': safeCell_(attribution.utm_source),
+      'UTM Medium': safeCell_(attribution.utm_medium),
+      'UTM Campaign': safeCell_(attribution.utm_campaign),
+      'UTM Content': safeCell_(attribution.utm_content),
+      'UTM Term': safeCell_(attribution.utm_term),
+      'GCLID': safeCell_(attribution.gclid),
+      'GBRAID': safeCell_(attribution.gbraid),
+      'WBRAID': safeCell_(attribution.wbraid),
+    };
+    const currentHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    sheet.appendRow(currentHeaders.map(function (header) {
+      return Object.prototype.hasOwnProperty.call(rowByHeader, header) ? rowByHeader[header] : '';
+    }));
 
     SpreadsheetApp.flush();
     return jsonResponse_({ ok: true, leadId: data.leadId });
@@ -106,7 +106,7 @@ function validateLead_(data) {
     throw new Error('Identificação do formulário inválida.');
   }
 
-  const required = ['leadId', 'name', 'whatsapp', 'situation', 'propertyValue', 'city'];
+  const required = ['leadId', 'name', 'whatsapp', 'situation'];
   required.forEach(function (field) {
     if (!String(data[field] || '').trim()) {
       throw new Error('Campo obrigatório ausente: ' + field);
@@ -119,13 +119,9 @@ function validateLead_(data) {
   }
 
   const situations = ['Imóvel penhorado', 'Risco de penhora', 'Leilão agendado', 'Outra situação'];
-  const propertyValues = ['Até R$ 500 mil', 'De R$ 500 mil a R$ 1 milhão', 'Acima de R$ 1 milhão'];
 
   if (situations.indexOf(data.situation) === -1) {
     throw new Error('Situação inválida.');
-  }
-  if (propertyValues.indexOf(data.propertyValue) === -1) {
-    throw new Error('Faixa de valor inválida.');
   }
   if (data.privacyAccepted !== true) {
     throw new Error('Consentimento de privacidade ausente.');

@@ -17,14 +17,13 @@ Acesse `http://localhost:3000/penhora-de-imoveis`.
 Preencha `.env.local` sem versionar dados reais:
 
 - `NEXT_PUBLIC_SITE_URL`: origem canônica, sem barra final. Em produção, use `https://imovel.advsamuelsantos.com.br`.
-- `NEXT_PUBLIC_WHATSAPP_NUMBER`: número com DDI e DDD, apenas dígitos. O projeto usa como referência o número institucional verificado, mas a titularidade e atualidade devem ser confirmadas antes da publicação.
 - `NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL`: URL pública `/exec` da implantação do Apps Script que grava na aba `imovel`.
 - `NEXT_PUBLIC_CONTACT_EMAIL` e `NEXT_PUBLIC_OFFICE_ADDRESS`: dados institucionais opcionais.
 - `NEXT_PUBLIC_GTM_ID`: permite substituir o contêiner GTM padrão (`GTM-5KHN42MZ`). Não mantenha outra instalação duplicada.
 
 ## Formulário
 
-O mesmo formulário aparece em um modal acionado pelos CTAs e permanece visível na seção final. A validação com Zod ocorre a cada alteração; o botão permanece desabilitado até que nome, WhatsApp, situação, valor do imóvel, cidade/UF e aceite de privacidade estejam válidos. No envio, o navegador tenta registrar o lead na aba `imovel` por `sendBeacon` e redireciona imediatamente ao WhatsApp do escritório com uma mensagem identificando a origem no site e os dados preenchidos.
+O mesmo formulário aparece em um modal acionado pelos CTAs e permanece visível na seção final. A validação com Zod ocorre a cada alteração; o botão permanece desabilitado até que nome, WhatsApp, situação da penhora e aceite de privacidade estejam válidos. No envio, o navegador tenta registrar o lead na aba `imovel` por `sendBeacon` e redireciona imediatamente ao WhatsApp `5511936249503` do escritório com uma mensagem identificando a origem no site e os dados preenchidos.
 
 O código e as instruções para a planilha estão em `apps-script/Code.gs` e `apps-script/README.md`.
 

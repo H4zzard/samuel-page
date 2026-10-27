@@ -22,7 +22,7 @@ export const siteConfig = {
   pageUrl: `${baseUrl}/penhora-de-imoveis`,
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ?? "",
   address: process.env.NEXT_PUBLIC_OFFICE_ADDRESS?.trim() ?? "",
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") || "5511947595005",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") || "5511936249503",
   whatsappMessage:
     "Olá, Dr. Samuel. Gostaria de informações sobre atendimento jurídico relacionado à penhora de um imóvel.",
   leadsWebhookUrl: process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL?.trim() ?? "",
